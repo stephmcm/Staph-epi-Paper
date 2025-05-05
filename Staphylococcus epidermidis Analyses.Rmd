@@ -1,0 +1,111 @@
+---
+title: "Staphylococcus epidermidis Analyses"
+author: "Stephanie McMahon"
+date: "2025-05-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## The only things done in R for the S. epidermidis paper were the heatmaps for ARG and Virulence factors
+    #Multiple heatmaps mde for the following
+      -ARG for AML and Non-AML Isolates
+      -ARG for only AML Isolates
+      -Virulence for AML and Non-AML Isolates
+      -Vurlence for only AML Isolates
+
+#Heatmap for ARG for AML and Non-AML Isolates
+```{r ARGs for All Isolates, message=FALSE, results='hide', warning=FALSE}
+BiocManager::install("pheatmap")
+BiocManager::install("RColorBrewer")
+setwd("~/Desktop")
+library(pheatmap)
+library(RColorBrewer)
+library(readxl)
+
+
+df <- read_excel("Staph_Heatmap_Master_Sheet.xlsx", sheet = "ARG")
+dfdata =df[-1]
+hm<- data.matrix(dfdata[4:46,])
+
+row.names(hm) = unlist(df[4:46,1])
+
+index <- data.frame(df[1:3,])
+id <- index[,2:115]
+rownames(id) <- index$ID
+colnames(id) <- colnames(hm)
+idk <- as.data.frame(t(id))
+
+colors <- list("Origin"=c("AML"="violetred", "Non-AML"="purple4"), "Classification"=c("Colonization"="royalblue3", "Infection"="thistle4"),"Location"=c("Stool"="sienna4", "Blood"="red2", "Skin"="peachpuff1", "Central Venous Catheter"="cyan", "Pertoneal Cavity"="purple", "Cerebrospinal Fluid"="steelblue", "Urine"="goldenrod1", "Nasal Swab"="darkorange3", "Ear Swab"="slateblue3", "Tissue"="seagreen1"))
+
+pheatmap(hm, color = c("white", "forestgreen"), annotation_col = idk, annotation_colors = colors, legend = FALSE, border_color = NA)
+```
+#ARG for only AML Isolates
+```{r ARGs for AML Isolates ONLY, message=FALSE, results='hide'}
+df <- read_excel("Staph_Heatmap_Master_Sheet.xlsx", sheet = "Lab ARG")
+dfdata =df[-1]
+hm<- data.matrix(dfdata[3:46,])
+
+row.names(hm) = unlist(df[3:46,1])
+
+
+index <- data.frame(df[1:2,])
+id <- index[,2:45]
+rownames(id) <- index$ID
+colnames(id) <- colnames(hm)
+idk <- as.data.frame(t(id))
+
+colors2 <- list("Classification"=c("Colonization"="royalblue3", "Infection"="thistle4"),"Location"=c("Stool"="sienna4", "Blood"="red2", "Tissue"="seagreen1", "Urine"="goldenrod1"))
+
+pheatmap(hm, color = c("white", "forestgreen"), annotation_col = idk, annotation_colors = colors2, legend = FALSE, border_color = NA)
+```
+
+#Virulence for AML and Non-AML Isolates
+```{r Virulence Genes for All Isolates, message=FALSE, results='hide'}
+df <- read_excel("Staph_Heatmap_Master_Sheet.xlsx", sheet = "Virulence")
+dfdata =df[-1]
+hm<- data.matrix(dfdata[4:8,])
+
+row.names(hm) = unlist(df[4:8,1])
+
+index <- data.frame(df[1:3,])
+id <- index[,2:115]
+rownames(id) <- index$ID
+colnames(id) <- colnames(hm)
+idk <- as.data.frame(t(id))
+
+colors <- list("Origin"=c("AML"="violetred", "Non-AML"="purple4"), "Classification"=c("Colonization"="royalblue3", "Infection"="thistle4"),"Location"=c("Stool"="sienna4", "Blood"="red2", "Skin"="peachpuff1", "Central Venous Catheter"="cyan", "Pertoneal Cavity"="purple", "Cerebrospinal Fluid"="steelblue", "Urine"="goldenrod1", "Nasal Swab"="darkorange3", "Ear Swab"="slateblue3", "Tissue"="seagreen1"))
+pheatmap(hm, color = c("white", "forestgreen"), annotation_col = idk, annotation_colors = colors, legend = FALSE, border_color = NA)
+```
+
+#Virulence for only AML Isolates
+```{r Virulence Genes for AML Isolates ONLY, message=FALSE, results='hide'}
+df <- read_excel("Staph_Heatmap_Master_Sheet.xlsx", sheet = "Lab Virulence")
+dfdata =df[-1]
+hm<- data.matrix(dfdata[3:8,])
+
+row.names(hm) = unlist(df[3:8,1])
+
+
+index <- data.frame(df[1:2,])
+id <- index[,2:45]
+rownames(id) <- index$ID
+colnames(id) <- colnames(hm)
+idk <- as.data.frame(t(id))
+
+colors2 <- list("Classification"=c("Colonization"="royalblue3", "Infection"="thistle4"),"Location"=c("Stool"="sienna4", "Blood"="red2", "Tissue"="seagreen1", "Urine"="goldenrod1"))
+
+
+pheatmap(hm, color = c("white", "forestgreen"), annotation_col = idk, annotation_colors = colors2, legend = FALSE, border_color = NA)
+```
+
+
+
+
+
+
+
+
+
